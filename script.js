@@ -1,14 +1,16 @@
 const fruitForm = document.querySelector('#inputSection form')
 const fruitList = document.querySelector('#fruitSection ul')
-
+const fruitNutrition = document.querySelector('#nutritionSection p')
 fruitForm.addEventListener('submit', extractFruit) // e shows the event listener thats created
 
+//fruitForm.addEventListener('click', removeFruit) // e shows the event listener thats created
+let cal =0
 
 
 
 function extractFruit(e) {
     e.preventDefault()
-    addFruit(e.target.fruitInput.value)
+    fetchFruitData(e.target.fruitInput.value)
     //alt way
     //console.log(e,target[0].value)
     e.target.fruitInput.value =""
@@ -16,13 +18,44 @@ function extractFruit(e) {
 
 function addFruit(fruit){
     const li = document.createElement('li')
-    li.textContent = fruit //gets the bit in the middle text only, not tag
-    if ( !(/^[A-Za-z]+$/.test(fruit) ){
+    //console.log(li)
+    li.textContent = fruit.name//gets the bit in the middle text only, not tag
+    li.addEventListener('click',removeFruit)
+    if (!(/^[A-Za-z]+$/.test(fruit))) {
         fruitList.appendChild(li)
+        console.log(fruitList)
     }
+    cal += fruit.nutritions.calories
+    fruitNutrition.textContent = cal
+
+
     //fruitList.appendChild(li) // adds to end of list
 
 }
+function removeFruit(e){
+   e.target.remove() //gets the bit in the middle text only, not tag
+}   
 
-//no empty fruit
-//click on fruit, removed from list
+async function fetchFruitData(fruit) {
+    try {
+        const resp = await fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`);
+
+        if (resp.ok) {
+            const data = await resp.json();
+            addFruit(data);
+        } else {
+            throw "Error: http status code = " + resp.status;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
+function processResponse(resp){
+    if (resp.ok) {
+        return resp.json()
+    } else {
+        throw "Wrror: http status code = "+ resp.status
+    }
+}
