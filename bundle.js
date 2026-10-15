@@ -26,10 +26,10 @@ function addFruit(fruit){
     //console.log(li)
     li.textContent = fruit.name//gets the bit in the middle text only, not tag
     li.addEventListener('click',removeFruit)
-    if (!(/^[A-Za-z]+$/.test(fruit))) {
-        fruitList.appendChild(li)
+    // if ((/^[A-Za-z]+$/.test(fruit))) {
+    fruitList.appendChild(li)
         //console.log(fruitList)
-    }
+    //}
     cal += fruit.nutritions.calories
     fruitNutrition.textContent = cal
 
@@ -92,7 +92,9 @@ async function fetchImageData(fruit) {
 
     function extractFruitImage(data){
         console.log(data.hits[0].previewURL)
-
+        let img = data.hits[0].previewURL
+        fruitImage.src = (img)
+        //fruitImage.baseURI = data.hits[0].previewURL
     }
 
 
