@@ -21,26 +21,6 @@ function extractFruit(e) {
     e.target.fruitInput.value = ""
 }
 
-function addFruit(fruit){
-    const li = document.createElement('li')
-    //console.log(li)
-    li.textContent = fruit.name//gets the bit in the middle text only, not tag
-    li.addEventListener('click',removeFruit)
-    // if ((/^[A-Za-z]+$/.test(fruit))) {
-    fruitList.appendChild(li)
-        //console.log(fruitList)
-    //}
-    cal += fruit.nutritions.calories
-    fruitNutrition.textContent = cal
-
-
-    //fruitList.appendChild(li) // adds to end of list
-
-}
-function removeFruit(e){
-   e.target.remove() //gets the bit in the middle text only, not tag
-}   
-
 async function fetchFruitData(fruit) {
     try {
         const resp = await fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`);
@@ -55,6 +35,24 @@ async function fetchFruitData(fruit) {
         console.log(e);
     }
 }
+
+function addFruit(fruit){
+    const li = document.createElement('li')
+    li.textContent = fruit.name//gets the bit in the middle text only, not tag
+    li.addEventListener('click',removeFruit)
+    fruitList.appendChild(li)
+    cal += fruit.nutritions.calories
+    fruitNutrition.textContent = cal
+
+
+    //fruitList.appendChild(li) // adds to end of list
+
+}
+function removeFruit(e){
+   e.target.remove() //gets the bit in the middle text only, not tag
+}   
+
+
 
 
 function processResponse(resp){
@@ -81,17 +79,10 @@ async function fetchImageData(fruit) {
         console.log(e);
     }
 }
-// function fetchImageData(fruit){
-//     let API_KEY = '58058300-fc4e778c6bbf7bf43724f1320';
-//     let URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent(fruit);
-//     let banana
-//     console.log(URL)
-//     //console.log(banana = fruit.hits.webURL)
-//     //extractFruitImage()      
-// }
+
 
     function extractFruitImage(data){
-        console.log(data.hits[0].previewURL)
+        //console.log(data.hits[0].previewURL)
         let img = data.hits[0].previewURL
         fruitImage.src = (img)
         //fruitImage.baseURI = data.hits[0].previewURL
