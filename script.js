@@ -1,6 +1,9 @@
 const fruitForm = document.querySelector('#inputSection form')
 const fruitList = document.querySelector('#fruitSection ul')
 const fruitNutrition = document.querySelector('#nutritionSection p')
+const fruitImage = document.querySelector('#fruitImageSection img')
+
+
 fruitForm.addEventListener('submit', extractFruit) // e shows the event listener thats created
 
 //fruitForm.addEventListener('click', removeFruit) // e shows the event listener thats created
@@ -11,9 +14,10 @@ let cal =0
 function extractFruit(e) {
     e.preventDefault()
     fetchFruitData(e.target.fruitInput.value)
+    fetchImageData(e.target.fruitInput.value)
     //alt way
     //console.log(e,target[0].value)
-    e.target.fruitInput.value =""
+    e.target.fruitInput.value = ""
 }
 
 function addFruit(fruit){
@@ -23,7 +27,7 @@ function addFruit(fruit){
     li.addEventListener('click',removeFruit)
     if (!(/^[A-Za-z]+$/.test(fruit))) {
         fruitList.appendChild(li)
-        console.log(fruitList)
+        //console.log(fruitList)
     }
     cal += fruit.nutritions.calories
     fruitNutrition.textContent = cal
@@ -59,3 +63,34 @@ function processResponse(resp){
         throw "Wrror: http status code = "+ resp.status
     }
 }
+
+async function fetchImageData(fruit) {
+    try {
+        let API_KEY = '58058300-fc4e778c6bbf7bf43724f1320';
+        const resp = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${fruit}`);
+
+        if (resp.ok) {
+            const data = await resp.json();
+            //console.log(data)
+            extractFruitImage(data);
+        } else {
+            throw "Error img: http status code = " + resp.status;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+// function fetchImageData(fruit){
+//     let API_KEY = '58058300-fc4e778c6bbf7bf43724f1320';
+//     let URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent(fruit);
+//     let banana
+//     console.log(URL)
+//     //console.log(banana = fruit.hits.webURL)
+//     //extractFruitImage()      
+// }
+
+    function extractFruitImage(data){
+        console.log(data.hits[0].previewURL)
+
+    }
+
