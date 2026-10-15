@@ -39,17 +39,22 @@ async function fetchFruitData(fruit) {
 function addFruit(fruit){
     const li = document.createElement('li')
     li.textContent = fruit.name//gets the bit in the middle text only, not tag
-    li.addEventListener('click',removeFruit)
+    li.addEventListener('click', (e) => {
+    removeFruit(e,fruit)
+    })
     fruitList.appendChild(li)
     cal += fruit.nutritions.calories
-    fruitNutrition.textContent = cal
+    fruitNutrition.textContent = "Total Calories: " + cal
 
 
     //fruitList.appendChild(li) // adds to end of list
 
 }
-function removeFruit(e){
+function removeFruit(e,fruit){
    e.target.remove() //gets the bit in the middle text only, not tag
+   cal -= fruit.nutritions.calories
+   fruitNutrition.textContent = "Total Calories: " + cal
+   //console.log(e)
 }   
 
 
